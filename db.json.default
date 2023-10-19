@@ -1,0 +1,19 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "title": "Learn React Query",
+      "completed": true
+    },
+    {
+      "title": "Zustand",
+      "completed": false,
+      "id": 2
+    },
+    {
+      "title": "Feature-Sliced Design",
+      "completed": true,
+      "id": 3
+    }
+  ]
+}

@@ -26,7 +26,6 @@ export default function NewTodo() {
       );
       // return client.invalidateQueries({
       //   queryKey: ["todos"],
-      //   refetchType: "none",
       // });
     },
   });

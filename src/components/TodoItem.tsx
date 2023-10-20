@@ -6,23 +6,18 @@ import {
   Stack,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { Todo } from "types/todo.ts";
-import { deleteTodo, toggleTodoStatus } from "services/todos.ts";
+import useRemoveTodo from "hooks/useRemoveTodo.ts";
+import useToggleTodo from "hooks/useToggleTodo.ts";
 
 export default function TodoItem({ completed, id, title }: Todo) {
-  const client = useQueryClient();
+  const { disabledToggle, toggle } = useToggleTodo(id, completed);
 
-  const { mutate: toggle } = useMutation({
-    mutationFn: () => toggleTodoStatus(id, !completed),
-    onSuccess: () => client.invalidateQueries({ queryKey: ["todos"] }),
-  });
+  const { disabledRemove, remove } = useRemoveTodo(id);
 
-  const { mutate: remove } = useMutation({
-    mutationFn: () => deleteTodo(id),
-    onSuccess: () => client.invalidateQueries({ queryKey: ["todos"] }),
-  });
+  const toggleWithPending =
+    disabledToggle || disabledRemove ? undefined : () => toggle();
 
   return (
     <ListItem>
@@ -31,13 +26,18 @@ export default function TodoItem({ completed, id, title }: Todo) {
         direction="row"
         justifyContent="space-between"
         width="100%"
-        onClick={() => toggle()}
+        onClick={toggleWithPending}
       >
         <FormControlLabel
-          control={<Checkbox checked={completed} />}
+          control={
+            <Checkbox
+              checked={completed}
+              disabled={disabledToggle || disabledRemove}
+            />
+          }
           label={title}
         />
-        <IconButton aria-label="delete">
+        <IconButton aria-label="delete" disabled={disabledRemove}>
           <DeleteIcon
             onClick={(event) => {
               event.stopPropagation();

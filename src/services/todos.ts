@@ -12,6 +12,7 @@ export const fetchTodos = async (state: TodoState = "all"): Promise<Todo[]> => {
 };
 
 export const toggleTodoStatus = async (todoId: number, completed: boolean) => {
+  await sleep(500);
   const response = await fetch(`${BASE_URL}/${todoId}`, {
     method: "PATCH",
     body: JSON.stringify({ completed }),
@@ -23,6 +24,7 @@ export const toggleTodoStatus = async (todoId: number, completed: boolean) => {
 };
 
 export const createTodo = async (title: string) => {
+  await sleep(500);
   const response = await fetch(BASE_URL, {
     method: "POST",
     body: JSON.stringify({ title, completed: false }),
@@ -34,6 +36,7 @@ export const createTodo = async (title: string) => {
 };
 
 export const deleteTodo = async (id: number) => {
+  await sleep(500);
   const response = await fetch(`${BASE_URL}/${id}`, {
     method: "DELETE",
   });
